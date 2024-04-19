@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("../static/back.jpg");
+            background-repeat:no-repeat;
+            background-size:cover;
+        }
+        .container {
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 5%;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5.4px);
+            -webkit-backdrop-filter: blur(5.4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], select {
+            width: calc(100% - 10px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .result-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .result {
+            flex: 0 0 48%;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .left-result {
+            background-color: #ffcccc; /* Red color background */
+        }
+        .right-result {
+            background-color: #ccffcc; /* Green color background */
+        }
+        .result h3 {
+            margin-top: 0;
+        }
+        .result p {
+            margin: 5px 0;
+        }
+        .arrow {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <center><h1>Taxpert System</h1></center>
+
+        <h2>Generate Tax Report</h2>
+        <form method="post">
+            <label for="income">Income:</label>
+            <input type="text" id="income" name="income"><br>
+            <label for="province">Province:</label>
+                <select id="province" name="province">
+                    <option value="Alberta">Alberta</option>
+                    <option value="BC">British Columbia</option>
+                    <option value="Manitoba">Manitoba</option>
+                    <option value="NB">New Brunswick</option>
+                    <option value="NAL">Newfoundland and Labrador</option>
+                    <option value="NS">Nova Scotia</option>
+                    <option value="Ontario" selected>Ontario</option>
+                    <option value="Prince Edward Island">Prince Edward Island</option>
+                    <option value="Quebec">Quebec</option>
+                    <option value="Saskatchewan">Saskatchewan</option>
+                    <option value="Northwest Territories">Northwest Territories</option>
+                    <option value="Nunavut">Nunavut</option>
+                    <option value="Yukon">Yukon</option>
+                </select><br>
+            <label for="child">Child/Children:</label>
+                <select id="child" name="child">
+                    <option value="0" selected>0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select><br>
+            <input type="submit" name="calculate_tax" value="Generate">
+        </form>
+
+        {% if tax_result %}
+        <div class="result-container">
+            <div class="result left-result">
+                <h3>Tax Paid <span class="arrow">&#9650;</span></h3>
+                <p>Income: ${{ income }}</p>
+                <p>Federal Tax: ${{ calculated_tax['federal_tax'] }}</p>
+                <p>Provincial Tax: ${{ calculated_tax['provincial_tax'] }}</p>
+                <p>Total Tax: ${{ calculated_tax['total_tax'] }}</p>
+                <p>CPP (Canada Pension Plan): ${{ calculated_tax['cpp'] }}</p>
+                <p>Employee Insurance: ${{ calculated_tax['ei'] }}</p>
+                <p>Income After Tax: ${{ calculated_tax['income_after'] }}</p>
+            </div>
+            <div class="result right-result">
+                <h3>Tax Returns <span class="arrow">&#9660;</span></h3>
+                <p>Tax Return: ${{ calculated_tax['tax_return'] }}</p>
+                <p>GST/HST Credits: ${{ calculated_tax['gst'] }}</p>
+                <p>Canada Carbon Rebate: ${{ calculated_tax['carbon'] }}</p>
+                <p>Ontario Trillium Benefits: ${{ calculated_tax['otb'] }}</p>
+                <p>Ontario Sales Tax Credit: ${{ calculated_tax['ostc'] }}</p>
+                <p>Child Benefits: ${{ calculated_tax['childB'] }} per month</p>
+            </div>
+        </div>
+        <p>Note: Figures presented are estimates and subject to change based on circumstances.</p>
+        {% endif %}
+        
+    </div>
+</body>
+</html>
