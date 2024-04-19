@@ -1,1 +1,1 @@
-web: gunicorn tax_calculator:app
+web: python tax_calculator.py
